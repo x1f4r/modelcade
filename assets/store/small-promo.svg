@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 280">
+  <defs>
+    <radialGradient id="violetGlow" cx="0" cy="0" r="1" gradientTransform="translate(48 255) rotate(-22) scale(260 160)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7649EF" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#7649EF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orangeGlow" cx="0" cy="0" r="1" gradientTransform="translate(430 42) rotate(150) scale(280 150)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF8A00" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#FF8A00" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rail" x1="42" y1="242" x2="398" y2="242" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7548F2"/>
+      <stop offset="0.52" stop-color="#CA51C2"/>
+      <stop offset="1" stop-color="#FF9208"/>
+    </linearGradient>
+    <linearGradient id="logoTrail" x1="31" y1="80" x2="105" y2="55" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7A48F5"/><stop offset="0.55" stop-color="#D050BA"/><stop offset="1" stop-color="#FF8A00"/>
+    </linearGradient>
+  </defs>
+  <rect width="440" height="280" fill="#0B0C0F"/>
+  <rect width="440" height="280" fill="url(#violetGlow)"/>
+  <rect width="440" height="280" fill="url(#orangeGlow)"/>
+  <text x="38" y="40" fill="#A8ABB2" font-family="Inter, SF Pro Text, Helvetica, Arial, sans-serif" font-size="10" font-weight="650" letter-spacing="1.8">INDEPENDENT CHROME EXTENSION</text>
+  <g transform="translate(28 76) scale(0.96875)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#9EA2AB" stroke-width="20"/>
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#25282E" stroke-width="16"/>
+    <path d="M31 67C31 77 38 84 50 84H76C91 84 102 73 102 58" stroke="url(#logoTrail)" stroke-width="14"/>
+    <circle cx="102" cy="58" r="17" fill="#202329"/>
+    <circle cx="102" cy="58" r="14" fill="#F7F7F8" stroke="#FFFFFF" stroke-width="1.5"/>
+  </g>
+  <text x="168" y="127" fill="#F7F7F8" font-family="Inter, SF Pro Display, Helvetica, Arial, sans-serif" font-size="39" font-weight="700" letter-spacing="-1.5">Modelcade</text>
+  <text x="170" y="158" fill="#C6C8CD" font-family="Inter, SF Pro Text, Helvetica, Arial, sans-serif" font-size="16" font-weight="450">Make models magnetic.</text>
+  <text x="170" y="184" fill="#8D9098" font-family="Inter, SF Pro Text, Helvetica, Arial, sans-serif" font-size="12.5">Model + reasoning control for ChatGPT</text>
+  <path d="M42 242H398" stroke="#24272D" stroke-width="14" stroke-linecap="round"/>
+  <path d="M42 242H326" stroke="url(#rail)" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="326" cy="242" r="15" fill="#F7F7F8" stroke="#FFFFFF" stroke-width="2"/>
+</svg>

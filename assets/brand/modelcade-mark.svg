@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="modelcadeTrail" x1="31" y1="80" x2="105" y2="55" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7A48F5"/>
+      <stop offset="0.55" stop-color="#D050BA"/>
+      <stop offset="1" stop-color="#FF8A00"/>
+    </linearGradient>
+    <radialGradient id="puck" cx="0" cy="0" r="1" gradientTransform="translate(97 51) rotate(128) scale(23)">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#ECEEF2"/>
+    </radialGradient>
+    <filter id="shadow" x="8" y="16" width="112" height="93" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#090A0D" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#A7ABB4" stroke-opacity="0.46" stroke-width="20"/>
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#25282E" stroke-width="16"/>
+    <path d="M31 67C31 77 38 84 50 84H76C91 84 102 73 102 58" stroke="url(#modelcadeTrail)" stroke-width="14"/>
+  </g>
+  <circle cx="102" cy="58" r="17" fill="#202329" fill-opacity="0.72"/>
+  <circle cx="102" cy="58" r="14" fill="url(#puck)" stroke="#FFFFFF" stroke-width="1.5"/>
+  <circle cx="97.5" cy="53.5" r="3.5" fill="#FFFFFF" fill-opacity="0.72"/>
+</svg>

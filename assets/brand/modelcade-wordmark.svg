@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160">
+  <g transform="translate(8 8) scale(1.125)" stroke-linecap="round" stroke-linejoin="round">
+    <defs>
+      <linearGradient id="wordmarkTrail" x1="31" y1="80" x2="105" y2="55" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#7A48F5"/><stop offset="0.55" stop-color="#D050BA"/><stop offset="1" stop-color="#FF8A00"/>
+      </linearGradient>
+    </defs>
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#9EA2AB" stroke-width="20"/>
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#25282E" stroke-width="16"/>
+    <path d="M31 67C31 77 38 84 50 84H76C91 84 102 73 102 58" stroke="url(#wordmarkTrail)" stroke-width="14"/>
+    <circle cx="102" cy="58" r="17" fill="#202329"/>
+    <circle cx="102" cy="58" r="14" fill="#F7F7F8" stroke="#FFFFFF" stroke-width="1.5"/>
+  </g>
+  <text x="174" y="104" fill="#F7F7F8" font-family="Inter, SF Pro Display, Helvetica, Arial, sans-serif" font-size="72" font-weight="690" letter-spacing="-2.5">Modelcade</text>
+</svg>

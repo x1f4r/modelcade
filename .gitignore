@@ -1,0 +1,17 @@
+.DS_Store
+
+# Local development and QA captures. Only sanitized files under assets/ ship.
+work/
+marketing/qa/
+marketing/screenshots/raw/
+marketing/*-source.mov
+marketing/*-master.mov
+marketing/modelcade-demo-live.mov
+marketing/modelcade-demo-raw.mov
+marketing/X_POST_DRAFT.md
+live-*.jpg
+live-*.png
+preview.png
+qa-*.png
+v*-preview.png
+releases/*.zip

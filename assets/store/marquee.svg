@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560">
+  <defs>
+    <radialGradient id="v" cx="0" cy="0" r="1" gradientTransform="translate(115 560) rotate(-26) scale(770 410)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7048EE" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#7048EE" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="o" cx="0" cy="0" r="1" gradientTransform="translate(1345 25) rotate(156) scale(850 430)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF8900" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#FF8900" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rail2" x1="132" y1="451" x2="1260" y2="451" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7347F0"/>
+      <stop offset="0.55" stop-color="#D052BB"/>
+      <stop offset="1" stop-color="#FF9209"/>
+    </linearGradient>
+    <linearGradient id="logoTrail2" x1="31" y1="80" x2="105" y2="55" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7A48F5"/><stop offset="0.55" stop-color="#D050BA"/><stop offset="1" stop-color="#FF8A00"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="560" fill="#0A0B0E"/>
+  <rect width="1400" height="560" fill="url(#v)"/>
+  <rect width="1400" height="560" fill="url(#o)"/>
+  <g transform="translate(98 96) scale(2.03125)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#9EA2AB" stroke-width="20"/>
+    <path d="M26 34H76C92 34 102 45 102 58C102 73 91 84 76 84H50C38 84 31 77 31 67C31 57 38 50 50 50H70" stroke="#25282E" stroke-width="16"/>
+    <path d="M31 67C31 77 38 84 50 84H76C91 84 102 73 102 58" stroke="url(#logoTrail2)" stroke-width="14"/>
+    <circle cx="102" cy="58" r="17" fill="#202329"/>
+    <circle cx="102" cy="58" r="14" fill="#F7F7F8" stroke="#FFFFFF" stroke-width="1.5"/>
+  </g>
+  <text x="420" y="218" fill="#F7F7F8" font-family="Inter, SF Pro Display, Helvetica, Arial, sans-serif" font-size="100" font-weight="710" letter-spacing="-4">Modelcade</text>
+  <text x="425" y="286" fill="#CACCD1" font-family="Inter, SF Pro Text, Helvetica, Arial, sans-serif" font-size="38" font-weight="450">Make models magnetic.</text>
+  <text x="426" y="338" fill="#90939A" font-family="Inter, SF Pro Text, Helvetica, Arial, sans-serif" font-size="24">A playful, native-delegating model and reasoning picker for ChatGPT.</text>
+  <path d="M132 451H1260" stroke="#25282E" stroke-width="34" stroke-linecap="round"/>
+  <path d="M132 451H1080" stroke="url(#rail2)" stroke-width="30" stroke-linecap="round"/>
+  <circle cx="1080" cy="451" r="40" fill="#F7F7F8" stroke="#FFFFFF" stroke-width="5"/>
+</svg>
