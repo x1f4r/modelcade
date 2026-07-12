@@ -1,4 +1,7 @@
-# Modelcade 1.4.9
+# Modelcade 1.4.10
+
+- Adds a prominent, matching local-data-use disclosure in Modelcade settings and the Web Store description.
+- Normalizes the 128-pixel store icon to Chrome's recommended 96-pixel artwork bounds.
 
 - Adds compact and full capability-aware pickers for Chat and Work.
 - Keeps ChatGPT's composer control visually unchanged and overrides Control-Shift-M only while Modelcade is enabled.

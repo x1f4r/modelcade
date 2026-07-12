@@ -37,7 +37,7 @@ Preferences remain in Chrome's extension storage until they are overwritten, Chr
 
 Modelcade minimizes data by keeping all processing local and requesting only the permissions needed for its single purpose. Material changes to this policy will be documented in this file and dated above.
 
-Modelcade complies with the [Chrome Web Store User Data Policy](https://developer.chrome.com/docs/webstore/program-policies/user-data/), including its Limited Use requirements. Data processed by Modelcade is used only to provide and maintain the user-facing picker. It is not used for advertising, creditworthiness, lending, sale, or transfer to third parties, and it is not made available for humans to read except when required for security, legal compliance, or user-requested support.
+Modelcade's use of information obtained through Chrome and the ChatGPT page adheres to the [Chrome Web Store User Data Policy](https://developer.chrome.com/docs/webstore/program-policies/limited-use), including its Limited Use requirements. Data processed by Modelcade is used only to provide and maintain the user-facing picker. It is not used for advertising, creditworthiness, lending, sale, or transfer to third parties, and it is not made available for humans to read except when required for security, legal compliance, or user-requested support.
 
 ## Contact
 

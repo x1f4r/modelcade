@@ -14,6 +14,8 @@
 
 Modelcade turns ChatGPT's model and reasoning controls into a fast magnetic picker without creating a separate ChatGPT client or using an API key.
 
+Local data use: to provide capability-aware choices and keep Ultra preferences separate by account/workspace, Modelcade reads the relevant ChatGPT control labels and availability plus available account identifier or profile-descriptor, plan, route, and workspace-label interface metadata. Raw values stay on the device and are not stored or transmitted by Modelcade.
+
 Open the picker from ChatGPT's unchanged composer control. Drag the white selector between valid reasoning levels, move between the models actually available to your account, or switch to the compact one-lane layout. In ChatGPT Work, clicking an already selected effort toggles the native Standard/Fast state. Ultra gets a deliberately excessive lever, particles, and optional synthesized sound effects.
 
 Modelcade supports both Chat and Work:

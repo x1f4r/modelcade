@@ -90,7 +90,7 @@ Read the complete [privacy policy](PRIVACY.md).
 
 ## Install in Chrome
 
-Until the reviewed Chrome Web Store listing is live, install the signed release source locally:
+Until the reviewed Chrome Web Store listing is live, install the release source locally:
 
 1. Open `chrome://extensions`.
 2. Enable **Developer mode**.
@@ -102,7 +102,7 @@ The release ZIP contains only the Manifest V3 runtime files. Marketing media, QA
 
 ## Maintenance note
 
-This is a local DOM bridge to ChatGPT's official selector. It deliberately avoids brittle React internals, but if ChatGPT renames or restructures those menus, the text-based bridge may need a small selector update. Capability discovery is repeated on every open, uses only enabled native choices, and verifies all delegated changes. If there are not enough supported choices—or a transaction cannot be confirmed—it immediately leaves the custom surface and hands control back to ChatGPT's native picker.
+This is a local DOM bridge to ChatGPT's official selector. It deliberately avoids brittle React internals, but if ChatGPT renames or restructures those menus, the text-based bridge may need a small selector update. Capability discovery is repeated on every open, uses only enabled native choices, and verifies all delegated changes. If there are not enough supported choices, it hands control back to ChatGPT's native picker. If an individual update cannot be confirmed, it rolls back, clears cached capabilities, and asks the user to reopen and retry; disabling Modelcade immediately restores the native picker.
 
 Native menus are made transparent during delegated updates and closed immediately afterward, so only the custom slider remains visible.
 

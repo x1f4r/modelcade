@@ -759,7 +759,11 @@
     const section = document.createElement("section");
     section.className = "rpp-settings-section";
     section.dataset.rppSettingsSection = "true";
-    section.innerHTML = '<div class="rpp-settings-section__head"><h3>Modelcade</h3></div>';
+    section.innerHTML = `
+      <div class="rpp-settings-section__head">
+        <h3>Modelcade</h3>
+        <p class="rpp-settings-disclosure">Local data use: reads relevant ChatGPT control labels and availability plus account/workspace interface metadata to scope Ultra preferences. Raw values stay on this device and are never stored or transmitted by Modelcade.</p>
+      </div>`;
 
     const pickerRow = document.createElement("div");
     pickerRow.className = "rpp-settings-row";
