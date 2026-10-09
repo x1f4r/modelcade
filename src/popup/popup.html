@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Modelcade</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="pp" id="app">
+    <header class="pp-head">
+      <img class="pp-mark" src="../../assets/brand/modelcade-mark.svg" alt="" width="28" height="28">
+      <span class="pp-name">Modelcade</span>
+      <kbd class="pp-key" title="Open the picker">⌃⇧M</kbd>
+    </header>
+
+    <label class="pp-row" for="enabled">
+      <span class="pp-row__label">Replace ChatGPT's picker</span>
+      <span class="pp-switch"><input type="checkbox" id="enabled" data-pref="enabled"><i></i></span>
+    </label>
+
+    <label class="pp-row" for="sounds">
+      <span class="pp-row__label">Sounds</span>
+      <span class="pp-switch pp-switch--sol"><input type="checkbox" id="sounds" data-pref="sounds"><i></i></span>
+    </label>
+
+    <div class="pp-row pp-row--volume" id="volume-row">
+      <input class="pp-volume" type="range" id="volume" min="0" max="1" step="0.01" aria-label="Volume">
+    </div>
+
+    <label class="pp-row" for="effects">
+      <span class="pp-row__label">Celebrations</span>
+      <span class="pp-switch pp-switch--ultra"><input type="checkbox" id="effects" data-pref="effects"><i></i></span>
+    </label>
+
+    <div class="pp-row pp-row--jackpot" id="jackpot-row">
+      <span class="pp-row__label">Jackpot</span>
+      <div class="pp-seg" role="radiogroup" aria-label="Jackpot style">
+        <button type="button" class="pp-seg__opt" role="radio" data-jackpot="arcade" aria-checked="false">Arcade</button>
+        <button type="button" class="pp-seg__opt" role="radio" data-jackpot="slot" aria-checked="false">Slot machine</button>
+        <i class="pp-seg__puck" aria-hidden="true"></i>
+      </div>
+      <button type="button" class="pp-play" id="preview" aria-label="Play the jackpot">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </main>
+
+  <script src="../shared/prefs.js"></script>
+  <script src="../content/audio.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

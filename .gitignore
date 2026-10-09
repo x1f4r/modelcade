@@ -15,3 +15,5 @@ preview.png
 qa-*.png
 v*-preview.png
 releases/*.zip
+.playwright-mcp/
+reports/

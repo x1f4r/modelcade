@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Modelcade harness</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../src/styles/panel.css">
+  <style>
+    :root { color-scheme: light; --bg: #ffffff; --fg: #0d0d0d; --muted: #8f8f8f; --composer: #f4f4f4; --line: rgba(0,0,0,.08); }
+    html[data-theme="dark"] { color-scheme: dark; --bg: #212121; --fg: #ececec; --muted: #9b9b9b; --composer: #303030; --line: rgba(255,255,255,.08); }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--fg); font: 14px/1.4 ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif; }
+
+    .bar { position: fixed; top: 0; left: 0; right: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; padding: 8px 12px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 12px; }
+    .bar label { display: inline-flex; align-items: center; gap: 5px; color: var(--muted); }
+    .bar select, .bar button { font: inherit; color: var(--fg); background: var(--composer); border: 1px solid var(--line); border-radius: 8px; padding: 3px 8px; }
+    .bar button { cursor: pointer; }
+    .bar .log { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; max-width: 46ch; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+    .page { display: grid; place-items: center; min-height: 100vh; padding: 60px 24px; }
+    .page.at-bottom { align-content: end; }
+    .hero { text-align: center; margin-bottom: 28px; font-size: 26px; font-weight: 500; }
+    .composer { width: min(760px, 100%); background: var(--composer); border-radius: 28px; padding: 14px 16px 12px; box-shadow: 0 0 0 1px var(--line), 0 10px 30px rgba(0,0,0,.06); }
+    html[data-theme="dark"] .composer { box-shadow: 0 0 0 1px var(--line); }
+    .composer .input { color: var(--muted); padding: 2px 4px 18px; }
+    .composer .row { display: flex; align-items: center; gap: 10px; }
+    .composer .plus { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-size: 18px; color: var(--muted); }
+    .composer .spacer { flex: 1; }
+    .composer .trigger { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; background: rgba(127,127,127,.12); cursor: pointer; }
+    .composer .trigger .eff { color: var(--muted); }
+    .composer .send { width: 34px; height: 34px; border-radius: 50%; background: var(--fg); color: var(--bg); display: grid; place-items: center; }
+    .suggestions { width: min(760px, 100%); margin-top: 22px; color: var(--muted); display: grid; gap: 14px; }
+    .suggestions span::before { content: "○ "; }
+  </style>
+</head>
+<body>
+  <div class="bar">
+    <label>fixture <select id="fixture"></select></label>
+    <label>theme <select id="theme"><option value="light">light</option><option value="dark">dark</option></select></label>
+    <label>opens <select id="direction"><option value="down">down</option><option value="up">up</option></select></label>
+    <label><input type="checkbox" id="fail"> simulate failure</label>
+    <label><input type="checkbox" id="effects" checked> effects</label>
+    <label><input type="checkbox" id="reduced"> reduced motion</label>
+    <button id="celebrate">celebrate ultra</button>
+    <button id="celebrate-max">max</button>
+    <button id="celebrate-pro">pro</button>
+    <button id="reopen">reopen</button>
+    <span class="log" id="log"></span>
+  </div>
+
+  <main class="page" id="page">
+    <div class="hero" id="hero">What should we work on?</div>
+    <div class="composer" id="composer">
+      <div class="input">Work on anything</div>
+      <div class="row">
+        <div class="plus">+</div>
+        <div class="spacer"></div>
+        <div class="trigger" id="trigger"><span id="trigger-model">GPT-6.1 Sol</span> <span class="eff" id="trigger-effort">Medium</span> <span class="eff">⌄</span></div>
+        <div class="send">↑</div>
+      </div>
+    </div>
+    <div class="suggestions"><span>Create an image</span><span>Write or edit</span><span>Look something up</span></div>
+  </main>
+
+  <script src="../src/content/namespace.js"></script>
+  <script src="../src/content/catalog.js"></script>
+  <script src="fixtures.js"></script>
+  <script src="../src/content/audio.js" onerror="this.dataset.missing='1'"></script>
+  <script src="../src/content/palette.js"></script>
+  <script src="../src/content/fx.js"></script>
+  <script src="../src/content/panel.js"></script>
+  <script src="harness.js"></script>
+</body>
+</html>

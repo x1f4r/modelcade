@@ -4,7 +4,7 @@
 
 **Name:** Modelcade
 
-**Summary:** A playful, capability-aware model and reasoning picker that delegates every choice to ChatGPT's native controls.
+**Summary:** A playful arcade picker for ChatGPT's models, reasoning power, and speed, applied through ChatGPT's own controls.
 
 **Category:** Productivity
 
@@ -12,56 +12,48 @@
 
 ## Detailed description
 
-Modelcade turns ChatGPT's model and reasoning controls into a fast magnetic picker without creating a separate ChatGPT client or using an API key.
+Modelcade turns ChatGPT's model, reasoning-power, and speed controls into a fast, magnetic arcade picker, without a separate ChatGPT client or an API key.
 
-Local data use: to provide capability-aware choices and keep Ultra preferences separate by account/workspace, Modelcade reads the relevant ChatGPT control labels and availability plus available account identifier or profile-descriptor, plan, route, and workspace-label interface metadata. Raw values stay on the device and are not stored or transmitted by Modelcade.
+Click ChatGPT's model control in the composer, or press Control-Shift-M. Spin the model wheel, drag the white puck along the power rail, and tap it to switch to Fast or Ultrafast where your account offers them. Max powers up, Pro chimes, and Ultra gets a deliberately excessive lever, particle burst, and jackpot.
 
-Open the picker from ChatGPT's unchanged composer control. Drag the white selector between valid reasoning levels, move between the models actually available to your account, or switch to the compact one-lane layout. In ChatGPT Work, clicking an already selected effort toggles the native Standard/Fast state. Ultra gets a deliberately excessive lever, particles, and optional synthesized sound effects.
+- Every model, power stop, and speed tier comes from what ChatGPT offers your account right now.
+- Works in Chat and Work, including Work's Default mode.
+- Choices are applied through ChatGPT's own picker and saved by ChatGPT, so they persist exactly as if you had used ChatGPT's menu.
+- Locally synthesized sound effects with volume control, optional celebrations, and two jackpot styles.
+- Alt-click the control, or turn Modelcade off from its toolbar popup, to use ChatGPT's own picker.
 
-Modelcade supports both Chat and Work:
-
-- capability-aware choices based on ChatGPT's currently enabled native options;
-- compact and full layouts;
-- immediate magnetic snapping with keyboard support;
-- Sol, Terra, and Luna model palettes in Work;
-- Instant through Pro in Chat;
-- Standard/Fast control where ChatGPT exposes it;
-- account-aware Ultra availability;
-- master sound, Ultra sound, and optional slot-jackpot controls; and
-- a one-click fallback to ChatGPT's original selector.
-
-Every selection is delegated to ChatGPT's own interface and then verified. Modelcade uses no OpenAI API key, has no analytics or remote code, and sends no data to an extension-operated server.
+Local data use: Modelcade reads only the state of ChatGPT's model picker (offered models, power stops, speed tiers, and which are selected) plus the page theme and composer position. It does not read conversations, cookies, or account details. It stores only its own settings, on your device.
 
 Modelcade is an independent project and is not affiliated with or endorsed by OpenAI. ChatGPT is a trademark of OpenAI.
 
 ## Single purpose
 
-Present and operate ChatGPT's existing model, reasoning-effort, Ultra, and speed choices through a more expressive local interface.
+Present and operate ChatGPT's existing model, reasoning-power, and speed choices through a more expressive local interface.
 
 ## Permission justifications
 
-**storage** — Persists local picker layout, sound preferences, Standard/Fast state, and the minimum remembered state needed around Ultra mode.
+**storage**: Keeps Modelcade's own settings (on/off, sounds and volume, celebrations, jackpot style).
 
-**Host access to `https://chatgpt.com/*`** — Renders the picker on ChatGPT and reads/operates the native model, effort, Ultra, speed, and extension-settings controls required to apply and verify the user's selection. It also reads available account identifier or profile-descriptor, plan, route, and workspace-label interface metadata solely to derive an obfuscated on-device scope key for the Ultra preference. The source values are not stored or transmitted by Modelcade.
+**Host access to `https://chatgpt.com/*`**: Shows the picker on ChatGPT and applies the user's choices through ChatGPT's own model picker. It reads only that picker's state, the page theme, and the composer's position.
 
 **Remote code:** None.
 
 ## Privacy dashboard disclosure notes
 
-- Website content: yes. Modelcade reads the labels, enabled states, and structure of the relevant ChatGPT controls.
-- Personally identifiable information: declare if the dashboard classifies the locally processed account identifier or profile descriptor in this category.
-- Web browsing activity: declare if the dashboard classifies the active ChatGPT route or workspace route in this category.
+- Website content: yes. Modelcade reads the state of ChatGPT's model picker.
+- Personally identifiable information: no.
+- Web browsing activity: no.
 - All processing is local. Modelcade has no analytics, advertising, telemetry, extension-operated server, or data sale/sharing.
 - Certify that usage complies with the Chrome Web Store User Data Policy, including Limited Use requirements.
 
 ## Reviewer instructions
 
-1. Sign in to a ChatGPT account that exposes at least two native model or effort choices. Logged-out and one-choice surfaces intentionally use ChatGPT's native fallback.
-2. Open ChatGPT Chat or Work and click the unchanged model/effort control in the composer, or press Control-Shift-M.
-3. Select any available Modelcade stop and verify that ChatGPT's composer label updates to the same native model/effort.
-4. In Work, click the already-selected puck to toggle native Standard/Fast where the account exposes Fast.
-5. Open ChatGPT Settings → Personalization → Modelcade to switch between compact/full layouts, disable Modelcade, and configure Sounds, Ultra sound effects, or the optional slot-machine jackpot.
-6. Work, Fast, Pro-only choices, and Ultra appear only when ChatGPT exposes them to the reviewer account. Ultra also requires ChatGPT's native General → Enable Ultra effort setting.
+1. Sign in to a ChatGPT account that offers at least two models or power levels. Logged-out and single-choice surfaces intentionally open ChatGPT's own menu.
+2. In Chat or Work, click the model control in the composer, or press Control-Shift-M.
+3. Pick a model or power stop and confirm that ChatGPT's composer label changes to match. Reload: the choice persists.
+4. In Work, tap the selected puck to switch Standard/Fast where the account offers Fast.
+5. Click the Modelcade toolbar icon to turn the picker off (ChatGPT's own picker returns) or to change sounds, celebrations, and jackpot style.
+6. Pro-only choices such as Ultra, Pro, and Ultrafast appear only when ChatGPT offers them to the reviewer's account.
 
 ## URLs
 
