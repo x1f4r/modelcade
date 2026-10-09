@@ -1,43 +1,40 @@
 # Modelcade privacy policy
 
-Last updated: July 12, 2026
+Last updated: October 9, 2026
 
-Modelcade is an independent browser extension that changes how ChatGPT's existing model and reasoning controls are presented. It runs locally in the browser and delegates selections to controls already provided by ChatGPT. Modelcade is not affiliated with or endorsed by OpenAI.
+Modelcade is an independent browser extension that changes how ChatGPT's existing model, reasoning-power, and speed controls are presented. It runs locally in the browser and applies every choice through controls ChatGPT already provides. Modelcade is not affiliated with or endorsed by OpenAI.
 
 ## Data Modelcade processes
 
-Modelcade processes the minimum ChatGPT interface information needed to find and operate the native model, effort, Ultra, speed, and extension-settings controls. This includes the labels and availability states of those controls. To keep the Ultra preference separated between signed-in accounts and workspaces, it derives an obfuscated local scope key from available account identifier or profile-descriptor, plan, route, and workspace-label interface metadata. The original values are not stored or transmitted by Modelcade.
+On `chatgpt.com`, Modelcade reads the state of ChatGPT's model picker: the offered models, power stops, and speed tiers, their labels, and which ones are selected or unavailable. It also reads the page's light/dark theme and the size and position of the composer so the picker fits next to it.
 
-Modelcade does not intentionally read, store, or transmit chat messages, prompts, responses, uploaded files, cookies, passwords, payment information, or API keys.
+Modelcade does not read, store, or transmit chat messages, prompts, responses, uploaded files, cookies, account details, passwords, payment information, or API keys.
 
 ## Data Modelcade stores
 
-Modelcade uses Chrome's local extension storage for interface preferences and the minimum state needed to keep the picker consistent. Stored values may include:
+Modelcade uses Chrome's local extension storage for its own settings only:
 
 - whether Modelcade is enabled;
-- whether compact mode is enabled;
-- sound and Ultra-sound preferences;
-- whether the optional slot-machine jackpot is enabled;
-- the last Standard/Fast state;
-- the remembered base effort and model used around Ultra mode; and
-- a boolean mirror of the native Ultra setting, keyed by the locally derived account/workspace scope key.
+- whether sounds are on, and their volume;
+- whether celebrations are on; and
+- the jackpot sound style.
 
-This information stays on the user's device. Modelcade has no analytics, advertising, telemetry, remote code, or extension-operated server, and it does not sell or share data.
+Your model, power, and speed choices are saved by ChatGPT itself, exactly as if you had used ChatGPT's own menu. Modelcade keeps no copy of them.
+
+This information stays on your device. Modelcade has no analytics, advertising, telemetry, remote code, or extension-operated server, and it does not sell or share data. Version 2.0 deletes the per-account Ultra preference that version 1.x kept locally.
 
 ## Permissions
 
-- `storage` stores the local preferences described above.
-- Access to `https://chatgpt.com/*` lets the content script render the picker and delegate choices to ChatGPT's existing controls. Modelcade does not run on other websites.
+- `storage` keeps the settings listed above.
+- Access to `https://chatgpt.com/*` lets Modelcade show its picker on ChatGPT and apply choices through ChatGPT's own picker. Modelcade does not run on other websites.
 
 ## Retention and deletion
 
-Preferences remain in Chrome's extension storage until they are overwritten, Chrome removes them, or the extension is uninstalled. Uninstalling Modelcade deletes its extension storage. Users can also disable the custom picker at any time in ChatGPT under **Personalization → Modelcade → Use Modelcade picker**.
+Settings remain in Chrome's extension storage until you change them or uninstall Modelcade, which deletes them. You can turn Modelcade off at any time from its toolbar popup; ChatGPT's own picker then works unchanged.
 
-## Security and changes
+## Limited use
 
-Modelcade minimizes data by keeping all processing local and requesting only the permissions needed for its single purpose. Material changes to this policy will be documented in this file and dated above.
-
-Modelcade's use of information obtained through Chrome and the ChatGPT page adheres to the [Chrome Web Store User Data Policy](https://developer.chrome.com/docs/webstore/program-policies/limited-use), including its Limited Use requirements. Data processed by Modelcade is used only to provide and maintain the user-facing picker. It is not used for advertising, creditworthiness, lending, sale, or transfer to third parties, and it is not made available for humans to read except when required for security, legal compliance, or user-requested support.
+Modelcade's use of information obtained through Chrome and the ChatGPT page adheres to the [Chrome Web Store User Data Policy](https://developer.chrome.com/docs/webstore/program-policies/limited-use), including its Limited Use requirements. Information is used only to provide the picker. It is not used for advertising, creditworthiness, lending, sale, or transfer to third parties, and no human reads it.
 
 ## Contact
 

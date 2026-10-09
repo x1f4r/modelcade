@@ -1,21 +1,45 @@
 {
   "manifest_version": 3,
   "name": "Modelcade",
-  "description": "A playful, capability-aware model and reasoning picker that delegates every choice to ChatGPT's native controls.",
-  "version": "1.4.10",
+  "description": "A playful arcade picker for ChatGPT's models, reasoning power, and speed, applied through ChatGPT's own controls.",
+  "version": "2.0.0",
+  "minimum_chrome_version": "111",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "action": {
+    "default_title": "Modelcade",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
   "permissions": ["storage"],
   "host_permissions": ["https://chatgpt.com/*"],
   "content_scripts": [
     {
       "matches": ["https://chatgpt.com/*"],
-      "css": ["content.css"],
-      "js": ["content-script.js"],
+      "js": ["src/page/bridge.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "css": ["src/styles/panel.css"],
+      "js": [
+        "src/content/namespace.js",
+        "src/shared/prefs.js",
+        "src/content/catalog.js",
+        "src/content/audio.js",
+        "src/content/palette.js",
+        "src/content/fx.js",
+        "src/content/panel.js",
+        "src/content/main.js"
+      ],
       "run_at": "document_start"
     }
   ]

@@ -1,0 +1,669 @@
+/* Modelcade panel. Every selector is namespaced with mc-; nothing here styles
+   ChatGPT's own elements. The puck and the trail both derive their position
+   from --mc-t so they can never drift apart. */
+
+@property --mc-t {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --mc-row {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.mc-panel,
+.mc-panel * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.mc-panel {
+  --mc-ease: cubic-bezier(.22, 1, .36, 1);
+  --mc-liquid: cubic-bezier(.2, .82, .28, 1);
+  --mc-glass: #1b1b1f;
+  --mc-bed: #2a2b30;
+  --mc-ink: #ececee;
+  --mc-ink-2: #9a9ca4;
+  --mc-ink-3: #5f616a;
+  --mc-line: rgba(255, 255, 255, .1);
+  --mc-stop: #f79424;
+  --mc-model: #ffc94a;
+  --mc-radius: 20px;
+  --mc-row-h: 24px;
+  --mc-r: 16px;
+  --mc-inset: 20px;
+  --mc-lane-h: 36px;
+  --mc-span: calc(100% - 2 * var(--mc-inset));
+  position: fixed;
+  z-index: 2147483000;
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  width: 352px;
+  padding: 10px 12px;
+  border: 1px solid var(--mc-line);
+  border-radius: var(--mc-radius);
+  background: var(--mc-glass);
+  color: var(--mc-ink);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .06);
+  font: 500 12px/1.2 ui-sans-serif, -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0;
+  text-align: left;
+  user-select: none;
+  -webkit-user-select: none;
+  transform-origin: 100% 0;
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  backdrop-filter: blur(20px) saturate(1.2);
+}
+
+.mc-panel[data-direction="up"] { transform-origin: 100% 100%; }
+
+/* On ChatGPT's light theme the panel stays a dark device, but sits lighter:
+   a hairline rim instead of a glow and a softer, wider shadow. */
+.mc-panel[data-theme="light"] {
+  --mc-glass: #202024;
+  --mc-bed: #2f3036;
+  --mc-line: rgba(255, 255, 255, .13);
+  box-shadow: 0 0 0 1px rgba(15, 15, 20, .08), 0 16px 44px rgba(20, 20, 30, .26), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+/* ---- entrance / exit ---------------------------------------------------- */
+
+.mc-panel--enter { animation: mc-in .32s var(--mc-ease) both; }
+.mc-panel[data-direction="up"].mc-panel--enter { animation-name: mc-in-up; }
+.mc-panel--leave { animation: mc-out .18s ease-in both; pointer-events: none; }
+.mc-panel[data-direction="up"].mc-panel--leave { animation-name: mc-out-up; }
+
+@keyframes mc-in {
+  from { opacity: 0; transform: translateY(-10px) scale(.96); clip-path: inset(0 0 62% 0 round var(--mc-radius)); }
+  to { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0 0 0 0 round var(--mc-radius)); }
+}
+
+@keyframes mc-in-up {
+  from { opacity: 0; transform: translateY(10px) scale(.96); clip-path: inset(62% 0 0 0 round var(--mc-radius)); }
+  to { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0 0 0 0 round var(--mc-radius)); }
+}
+
+@keyframes mc-out {
+  to { opacity: 0; transform: translateY(-6px) scale(.97); }
+}
+
+@keyframes mc-out-up {
+  to { opacity: 0; transform: translateY(6px) scale(.97); }
+}
+
+/* ---- model drum ------------------------------------------------------------ */
+
+.mc-drum {
+  position: relative;
+  height: calc(var(--mc-row-h) * 3);
+  overflow: hidden;
+  border-radius: 12px;
+  outline: none;
+  cursor: grab;
+  touch-action: none;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, .25) 0, #000 32%, #000 68%, rgba(0, 0, 0, .25) 100%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, .25) 0, #000 32%, #000 68%, rgba(0, 0, 0, .25) 100%);
+}
+
+.mc-drum.is-dragging { cursor: grabbing; }
+.mc-drum[hidden] { display: none; }
+
+.mc-drum__window {
+  position: absolute;
+  z-index: 0;
+  top: var(--mc-row-h);
+  right: 0;
+  left: 0;
+  height: var(--mc-row-h);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .045);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+  transition: box-shadow .2s ease;
+}
+
+.mc-panel:not([data-input="pointer"]) .mc-drum:focus-visible .mc-drum__window {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mc-model) 70%, white 10%);
+}
+
+.mc-drum__track {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  transform: translateY(calc((1 - var(--mc-row)) * var(--mc-row-h)));
+  transition: --mc-row .3s var(--mc-liquid);
+}
+
+.mc-drum.is-dragging .mc-drum__track { transition-duration: .12s; }
+
+.mc-model {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: var(--mc-row-h);
+  padding: 0 8px;
+  color: var(--mc-ink-2);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: calc(1 - min(var(--mc-dist, 0), 2) * .22);
+  transition: color .2s ease, opacity .25s ease, font-size .2s var(--mc-liquid), text-shadow .2s ease;
+}
+
+.mc-model.is-selected {
+  color: var(--mc-row-color);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--mc-row-color) 50%, transparent);
+}
+
+.mc-model__name { min-width: 0; }
+
+.mc-model__ver {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, .08);
+  color: inherit;
+  font-size: 8.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+  text-shadow: none;
+  opacity: .85;
+}
+
+.mc-model.is-selected .mc-model__ver {
+  background: color-mix(in srgb, var(--mc-row-color) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--mc-row-color) 30%, transparent);
+  opacity: 1;
+}
+
+.mc-model__set { display: inline-flex; gap: 2px; }
+.mc-model__set i { width: 5px; height: 5px; border-radius: 50%; opacity: .9; }
+
+.mc-model__sub { display: none; }
+
+.mc-model.is-selected:has(.mc-model__sub) { align-items: flex-start; padding-top: 1px; }
+
+.mc-model.is-selected .mc-model__sub {
+  position: absolute;
+  left: 8px;
+  bottom: 0;
+  display: block;
+  color: var(--mc-ink-2);
+  font-size: 7.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.mc-panel[data-model-locked="true"] .mc-drum { cursor: not-allowed; opacity: .55; }
+.mc-panel[data-model-locked="true"] .mc-model { cursor: not-allowed; }
+
+/* ---- power rail ------------------------------------------------------------ */
+
+.mc-rail {
+  position: relative;
+  height: calc(var(--mc-row-h) * 3);
+  outline: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+.mc-rail:has(.mc-lane.is-dragging) { cursor: grabbing; }
+.mc-rail:has(.mc-lane[data-puck-hover="true"]:not(.is-dragging)) { cursor: pointer; }
+.mc-panel[data-stops-locked="true"] .mc-rail { cursor: not-allowed; opacity: .55; }
+
+.mc-labels {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  left: 0;
+  height: 14px;
+}
+
+.mc-label {
+  position: absolute;
+  top: 0;
+  left: calc(var(--mc-inset) + var(--mc-span) * var(--mc-i));
+  color: var(--mc-ink-2);
+  font-size: 9.5px;
+  font-weight: 500;
+  line-height: 14px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  transition: color .18s ease, text-shadow .18s ease, transform .2s var(--mc-ease);
+}
+
+.mc-label[data-special="ultra"] { color: #8f6fd4; }
+.mc-label[data-special="pro"] { color: #c9bfa6; }
+.mc-label[data-special="instant"] { color: #7f8792; }
+
+.mc-label.is-active {
+  color: var(--mc-stop);
+  font-weight: 650;
+  text-shadow: 0 0 6px color-mix(in srgb, var(--mc-stop) 55%, transparent);
+  transform: translate(-50%, -1px);
+}
+
+.mc-label.is-active[data-special="ultra"] { color: #d4bbff; text-shadow: 0 0 8px rgba(166, 117, 255, .9); }
+.mc-label.is-active[data-special="pro"] { color: #fff7e2; text-shadow: 0 0 8px rgba(255, 236, 190, .9); }
+.mc-label.is-active[data-special="max"] { animation: mc-ember 1.8s ease-in-out infinite alternate; }
+.mc-label.is-active[data-special="instant"] { color: #c3cad3; text-shadow: 0 0 6px rgba(160, 170, 185, .6); }
+
+@keyframes mc-ember {
+  from { text-shadow: 0 0 5px color-mix(in srgb, var(--mc-stop) 45%, transparent); }
+  to { text-shadow: 0 0 9px color-mix(in srgb, var(--mc-stop) 85%, transparent), 0 0 18px rgba(255, 120, 30, .35); }
+}
+
+.mc-lane {
+  --mc-t: 0;
+  position: absolute;
+  top: 18px;
+  right: 0;
+  left: 0;
+  height: var(--mc-lane-h);
+  border-radius: calc(var(--mc-lane-h) / 2);
+  background: var(--mc-bed);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(255, 255, 255, .04);
+  transition: --mc-t .3s var(--mc-liquid), box-shadow .25s ease;
+}
+
+.mc-lane.is-dragging { transition-duration: .11s; }
+
+.mc-panel:not([data-input="pointer"]) .mc-rail:focus-visible .mc-lane {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .4), 0 0 0 2px var(--mc-glass), 0 0 0 4px color-mix(in srgb, var(--mc-stop) 75%, white 10%);
+}
+
+.mc-panel[data-special="ultra"] .mc-lane {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(166, 117, 255, .18), 0 0 20px rgba(166, 117, 255, .22);
+}
+
+.mc-dot {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: calc(var(--mc-inset) + var(--mc-span) * var(--mc-i));
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .2);
+  transition: opacity .2s ease, background .2s ease;
+}
+
+.mc-dot[data-special="instant"] { background: rgba(150, 160, 175, .4); }
+.mc-dot[data-special="max"] { background: rgba(255, 170, 70, .5); box-shadow: 0 0 6px rgba(255, 140, 40, .35); }
+
+.mc-dot[data-special="ultra"] {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(166, 117, 255, .8), 0 0 8px rgba(166, 117, 255, .4);
+}
+
+.mc-dot[data-special="pro"] {
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 0;
+  background: #fff3cf;
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  opacity: .8;
+}
+
+.mc-dot.is-passed, .mc-dot.is-active { opacity: 0; }
+
+/* The override notch: a keyed break in the bed right before Ultra. It sits
+   above the trail so the fill visibly passes through the gate. */
+.mc-notch {
+  position: absolute;
+  z-index: 3;
+  top: 5px;
+  bottom: 5px;
+  left: calc(var(--mc-inset) + var(--mc-span) * var(--mc-i));
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: rgba(0, 0, 0, .6);
+  box-shadow: 1px 0 0 rgba(255, 255, 255, .1), 0 0 6px rgba(0, 0, 0, .5);
+}
+
+.mc-panel[data-special="ultra"] .mc-notch { box-shadow: 1px 0 0 rgba(214, 190, 255, .45), 0 0 8px rgba(166, 117, 255, .6); }
+
+/* The trail: full-width gradient revealed by a clip whose round corner is the
+   puck's radius, so the fill always ends in a cap exactly the puck's size. */
+.mc-trail {
+  position: absolute;
+  z-index: 2;
+  inset: 2px;
+  border-radius: var(--mc-r);
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-size: calc(100% + 4px - 2 * var(--mc-inset)) 100%, calc(var(--mc-inset) - 2px) 100%;
+  background-position: calc(var(--mc-inset) - 2px) 0, 100% 0;
+  clip-path: inset(0 calc(100% - (var(--mc-inset) - 2px) - (100% + 4px - 2 * var(--mc-inset)) * var(--mc-t) - var(--mc-r)) 0 0 round var(--mc-r));
+  opacity: .94;
+}
+
+.mc-trail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, .12));
+  pointer-events: none;
+}
+
+/* Ultra overrides the lane: once the puck passes the notch, violet floods back
+   over the family colors. */
+.mc-trail::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(60, 24, 150, .55), rgba(110, 66, 240, .85) 55%, #a675ff 85%, #c9a8ff);
+  opacity: 0;
+  transition: opacity .35s ease;
+  pointer-events: none;
+}
+
+.mc-panel[data-special="ultra"] .mc-trail::before { opacity: 1; }
+
+.mc-puck {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: calc(var(--mc-inset) + var(--mc-span) * var(--mc-t));
+  width: calc(var(--mc-r) * 2);
+  height: calc(var(--mc-r) * 2);
+  margin: calc(var(--mc-r) * -1) 0 0 calc(var(--mc-r) * -1);
+}
+
+.mc-puck__body {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 1px solid #e4e4e6;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #fff 0 34%, #f1f2f4 100%);
+  color: #1b1b1f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .35), 0 0 0 4px color-mix(in srgb, var(--mc-stop) 26%, transparent), 0 0 16px color-mix(in srgb, var(--mc-stop) 60%, transparent);
+  transition: scale .18s var(--mc-liquid), box-shadow .22s ease;
+}
+
+.mc-lane.is-dragging .mc-puck__body { scale: 1.05; }
+.mc-lane.is-dragging[data-dir="right"] .mc-puck__body { scale: 1.08 .97; }
+.mc-lane.is-dragging[data-dir="left"] .mc-puck__body { scale: 1.08 .97; }
+.mc-lane[data-puck-hover="true"]:not(.is-dragging) .mc-puck__body { scale: 1.06; }
+
+.mc-panel[data-special="max"] .mc-puck__body {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .35), 0 0 0 4px color-mix(in srgb, var(--mc-stop) 30%, transparent), 0 0 18px color-mix(in srgb, var(--mc-stop) 75%, transparent), 0 0 34px rgba(255, 120, 30, .35);
+}
+
+.mc-panel[data-special="ultra"] .mc-puck__body {
+  border-color: #efe6ff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .35), 0 0 0 4px rgba(166, 117, 255, .32), 0 0 18px rgba(166, 117, 255, .8), 0 0 40px rgba(140, 90, 255, .45);
+}
+
+.mc-panel[data-special="pro"] .mc-puck__body {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .35), 0 0 0 4px rgba(255, 240, 200, .3), 0 0 18px rgba(255, 236, 190, .85), 0 0 36px rgba(255, 220, 150, .35);
+}
+
+.mc-puck__glyph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  scale: .55;
+  transition: opacity .16s ease, scale .22s var(--mc-liquid);
+  pointer-events: none;
+}
+
+.mc-puck__bolt { position: absolute; width: 17px; height: 17px; }
+.mc-puck__bolt--echo { display: none; }
+
+.mc-lane[data-puck-hover="true"]:not(.is-dragging) .mc-puck[data-tier="standard"] .mc-puck__glyph { opacity: .22; scale: .9; }
+.mc-puck[data-tier="fast"] .mc-puck__glyph,
+.mc-puck[data-tier="ultrafast"] .mc-puck__glyph { opacity: .94; scale: 1; }
+
+.mc-puck[data-tier="ultrafast"] .mc-puck__bolt { translate: -2.5px 0; }
+.mc-puck[data-tier="ultrafast"] .mc-puck__bolt--echo { display: block; translate: 3.5px 0; opacity: .45; scale: .8; }
+
+/* Ultrafast: a thin electric ring circling the puck. */
+.mc-puck[data-tier="ultrafast"] .mc-puck__body::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 40%, color-mix(in srgb, var(--mc-stop) 70%, white) 62%, #fff 68%, transparent 80% 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 2px));
+  animation: mc-spin 1.3s linear infinite;
+  pointer-events: none;
+}
+
+.mc-puck.is-tapped .mc-puck__body { animation: mc-tap .36s var(--mc-liquid); }
+
+@keyframes mc-tap {
+  0% { scale: 1; }
+  35% { scale: .9; }
+  70% { scale: 1.06; }
+  100% { scale: 1; }
+}
+
+@keyframes mc-spin { to { rotate: 360deg; } }
+
+/* Busy: a slow arc around the puck while ChatGPT confirms. */
+.mc-panel[data-busy="true"] .mc-puck__body::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1.5px solid transparent;
+  border-top-color: color-mix(in srgb, var(--mc-stop) 80%, white 20%);
+  border-radius: 50%;
+  animation: mc-spin 1s linear infinite;
+  pointer-events: none;
+}
+
+/* Liquid: a restrained directional squash on commit. */
+.mc-lane.is-liquid-x .mc-puck__body { animation: mc-liquid-x .32s var(--mc-liquid); }
+.mc-lane.is-liquid-y .mc-puck__body { animation: mc-liquid-y .38s var(--mc-liquid); }
+.mc-lane.is-liquid-x .mc-trail,
+.mc-lane.is-liquid-y .mc-trail { animation: mc-trail-pulse .36s var(--mc-liquid); }
+
+@keyframes mc-liquid-x {
+  0%, 100% { scale: 1; }
+  38% { scale: 1.09 .965; }
+  72% { scale: 1.02 .995; }
+}
+
+@keyframes mc-liquid-y {
+  0%, 100% { scale: 1; }
+  34% { scale: .965 1.09; }
+  72% { scale: .995 1.02; }
+}
+
+@keyframes mc-trail-pulse {
+  0%, 100% { filter: brightness(1); }
+  40% { filter: brightness(1.14) saturate(1.08); }
+}
+
+/* Mixed rails ("Default"): which model each run of stops belongs to. */
+.mc-groups {
+  position: absolute;
+  top: 57px;
+  right: 0;
+  left: 0;
+  height: 14px;
+}
+
+.mc-groups[hidden] { display: none; }
+
+.mc-group {
+  position: absolute;
+  top: 1px;
+  left: calc(var(--mc-inset) + var(--mc-span) * var(--mc-a));
+  display: flex;
+  width: calc(var(--mc-span) * (var(--mc-b) - var(--mc-a)));
+  justify-content: center;
+  color: var(--mc-ink-3);
+  font-size: 8.5px;
+  font-weight: 500;
+  line-height: 12px;
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+
+.mc-group::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  right: -9px;
+  left: -9px;
+  height: 1px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: .35;
+}
+
+.mc-group.is-active { color: var(--mc-group-color); }
+
+/* Optional inline note (only when the lead passes a message). */
+.mc-note {
+  position: absolute;
+  top: 57px;
+  right: 0;
+  left: 0;
+  color: #ff9a8c;
+  font-size: 8.5px;
+  line-height: 14px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transition: opacity .2s ease;
+  pointer-events: none;
+}
+
+.mc-note.is-visible { opacity: 1; }
+.mc-panel:has(.mc-note.is-visible) .mc-groups { opacity: 0; }
+
+/* ---- feedback ---------------------------------------------------------------- */
+
+.mc-panel.is-shaking { animation: mc-shake .4s cubic-bezier(.36, .07, .19, .97); }
+
+@keyframes mc-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+.mc-panel.is-error .mc-puck__body {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .35), 0 0 0 4px rgba(255, 95, 95, .35), 0 0 16px rgba(255, 95, 95, .7);
+}
+
+.mc-panel.is-celebrating[data-celebration="ultra"] { animation: mc-ultra-shake 1.18s cubic-bezier(.18, .9, .2, 1); }
+.mc-panel.is-celebrating[data-celebration="ultra"] .mc-puck__body { animation: mc-ultra-puck 1.05s var(--mc-liquid); }
+.mc-panel.is-celebrating[data-celebration="ultra"] .mc-trail { animation: mc-trail-overload .95s ease-out; }
+.mc-panel.is-celebrating[data-celebration="max"] .mc-puck__body { animation: mc-max-puck .7s var(--mc-liquid); }
+.mc-panel.is-celebrating[data-celebration="max"] .mc-trail { animation: mc-trail-pulse .7s ease-out; }
+.mc-panel.is-celebrating[data-celebration="pro"] .mc-puck__body { animation: mc-pro-puck .8s var(--mc-liquid); }
+
+@keyframes mc-ultra-shake {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0); }
+  4% { transform: translate(0, 2px) scale(.965, 1.045) rotate(-.25deg); }
+  9% { transform: translate(-9px, -4px) scale(1.055, .94) rotate(-.7deg); }
+  15% { transform: translate(10px, 3px) scale(.98, 1.025) rotate(.62deg); }
+  23% { transform: translate(-7px, -3px) scale(1.02, .985) rotate(-.42deg); }
+  33% { transform: translate(6px, 2px) rotate(.32deg); }
+  45% { transform: translate(-4px, -1px) rotate(-.22deg); }
+  58% { transform: translate(3px, 1px) rotate(.14deg); }
+  72% { transform: translate(-1.5px, 0) rotate(-.07deg); }
+  86% { transform: translate(.7px, 0); }
+}
+
+@keyframes mc-ultra-puck {
+  0% { scale: 1; filter: brightness(1); }
+  8% { scale: 1.5 .7; filter: brightness(1.6); }
+  22% { scale: .8 1.3; }
+  38% { scale: 1.18 .9; }
+  55% { scale: .95 1.06; }
+  72% { scale: 1.04 .98; }
+  100% { scale: 1; filter: brightness(1); }
+}
+
+@keyframes mc-max-puck {
+  0%, 100% { scale: 1; }
+  25% { scale: 1.22 .86; filter: brightness(1.3); }
+  55% { scale: .94 1.06; }
+}
+
+@keyframes mc-pro-puck {
+  0%, 100% { scale: 1; filter: brightness(1); }
+  20% { scale: 1.16; filter: brightness(1.8); }
+  60% { scale: .97; }
+}
+
+@keyframes mc-trail-overload {
+  0%, 100% { filter: brightness(1); }
+  12% { filter: brightness(2.1) saturate(1.4); }
+  36% { filter: brightness(1.25); }
+  55% { filter: brightness(1.7); }
+}
+
+/* ---- fx layer -------------------------------------------------------------------- */
+
+.mc-fx {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---- utilities ------------------------------------------------------------------ */
+
+.mc-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- reduced motion --------------------------------------------------------------- */
+
+.mc-panel[data-reduced="true"],
+.mc-panel[data-reduced="true"] * {
+  transition-duration: .01ms !important;
+  animation-duration: .01ms !important;
+  animation-iteration-count: 1 !important;
+}
+
+.mc-panel[data-reduced="true"].mc-panel--enter { animation: none; }
+.mc-panel[data-reduced="true"] .mc-puck[data-tier="ultrafast"] .mc-puck__body::before { animation: none; }
+.mc-panel[data-reduced="true"] .mc-label.is-active[data-special="max"] { animation: none; }
+
+/* No model list (single-model surface): the rail takes the full width. */
+.mc-panel[data-drum="false"] { grid-template-columns: minmax(0, 1fr); }
+
+/* ChatGPT's hover tooltip for the composer control would peek out behind the
+   open panel; tooltips stay hidden only while Modelcade is open. */
+html.mc-picker-open [role="tooltip"] { visibility: hidden !important; }
